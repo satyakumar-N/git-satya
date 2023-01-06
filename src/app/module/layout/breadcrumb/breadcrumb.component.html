@@ -1,0 +1,14 @@
+<nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
+    <ol class="breadcrumb pt-0">
+        <li class="breadcrumb-item">
+            <a *ngIf="User_details.role_id===101" [routerLink]="'/dashboard'">{{'menu.dashboards' | translate}}</a>
+            <a *ngIf="User_details.role_id===201" [routerLink]="'/qcdashboard'">{{'menu.dashboards' | translate}}</a>
+            <a *ngIf="User_details.role_id===301" [routerLink]="'/inspection'">{{'menu.dashboards' | translate}}</a>
+            <a *ngIf="User_details.role_id===501" [routerLink]="'/jobcreation'">{{'menu.dashboards' | translate}}</a>
+        </li>
+        <li class="breadcrumb-item" *ngFor="let sub of pathArr; let i=index" [hidden]="i >= (pathArr.length-1)">
+            <a [routerLink]="[getUrl(sub)]">{{getLabel(getUrl(sub)) | translate}}</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">{{ title || (getLabel('/'+path) | translate) }}</li>
+    </ol>
+</nav>

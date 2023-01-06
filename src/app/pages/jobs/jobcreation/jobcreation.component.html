@@ -1,0 +1,133 @@
+<div class="h-100">
+  <div class="container">
+    <div class="row h-100">
+      <div class="col-md-12 mx-auto my-auto">
+        <div class="card mb-4">
+          <div class="card-body">
+            <form [formGroup]="addclientuser">
+              <div class="row mt-4">
+
+                <div class="col-md-3">
+                  <label class="form-group has-float-label">
+                    <span>Company Type :</span>
+                    <ng-select appearance="outline" placeholder="Select" formControlName="company_type"
+                      (change)="select_company($event)">
+                      <ng-option *ngFor="let item of company_type" [value]="item.id">
+                        {{item.itemName}}
+                      </ng-option>
+                    </ng-select>
+                  </label>
+                  <div *ngIf="submitted && addclientuser.get('company_type').hasError('required')"
+                    class="IsRequired_select">
+                    Company type is required
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-group has-float-label">
+                    <span>Vehicle Type :</span>
+                    <ng-select appearance="outline" placeholder="Select" formControlName="vehicle_type">
+                      <ng-option *ngFor="let item of vehicle_type" [value]="item.id">
+                        {{item.itemName}}
+                      </ng-option>
+                    </ng-select>
+                  </label>
+                  <div *ngIf="submitted && addclientuser.get('vehicle_type').hasError('required')"
+                    class="IsRequired_select">
+                    Vehicle type is required
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-group has-float-label">
+                    <span>State :</span>
+                    <ng-select appearance="outline" placeholder="Select" formControlName="state"
+                      (change)="select_state($event)">
+                      <ng-option *ngFor="let item of state_list" [value]="item.id">
+                        {{item.itemName}}
+                      </ng-option>
+                    </ng-select>
+                  </label>
+                  <div *ngIf="submitted && addclientuser.get('state').hasError('required')"
+                    class="IsRequired_select">
+                    state is required
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-group has-float-label">
+                    <span>Branch Code / SBU :</span>
+                    <ng-select appearance="outline" placeholder="Select" formControlName="branchcode">
+                      <ng-option *ngFor="let item of branch_list" [value]="item.SBU_Code">
+                        {{item.SBU_Code}}
+                      </ng-option>
+                    </ng-select>
+                  </label>
+                  <div *ngIf="submitted && addclientuser.get('branchcode').hasError('required')"
+                    class="IsRequired_select">
+                    Branch Code / SBU is required
+                  </div>
+                </div>
+
+
+                <div class="col-md-3 mt-3">
+                  <label class="form-group has-float-label">
+                    <input type="text" maxlength="50" placeholder="Job Id" formControlName="Jobid" class="form-control"
+                      (focusout)="CheckData_jobid(addclientuser.get('Jobid').value)">
+                    <span>Job Id :</span>
+                    <div *ngIf="submitted && addclientuser.get('Jobid').hasError('required')" class="IsRequired">
+                      Job id is required
+                    </div>
+                  </label>
+                </div>
+
+                <div class="col-md-3 mt-3">
+                  <label class="form-group has-float-label">
+                    <input type="text" (keypress)="CommonService.AlphabetsOnly($event)" placeholder="Name"
+                      formControlName="fullname" class="form-control"
+                      (paste)="CommonService.PasteEventAlphabets($event)">
+                    <span>Name :</span>
+                    <div *ngIf="submitted && addclientuser.get('fullname').hasError('required')" class="IsRequired">
+                      Name is required
+                    </div>
+                  </label>
+                </div>
+
+                <div class="col-md-3 mt-3">
+                  <label class="form-group has-float-label">
+                    <input type="text" placeholder="Email" formControlName="email" class="form-control">
+                    <span>Email :</span>
+                    <div *ngIf="submitted && addclientuser.get('email').hasError('required')" class="IsRequired">
+                      Email is required
+                    </div>
+                    <div *ngIf="submitted && addclientuser.get('email').hasError('pattern')" class="IsRequired">
+                      Please enter a valid email address
+                    </div>
+                  </label>
+                </div>
+
+                <div class="col-md-3 mt-3">
+                  <label class="form-group has-float-label">
+                    <input type="text" maxlength="10" placeholder="Mobile Number"
+                      (keypress)="CommonService.NumberOnly($event)" (paste)="CommonService.PasteEventNumbers($event)"
+                      formControlName="phonenumber" class="form-control">
+                    <span>Mobile Number :</span>
+                    <div *ngIf="submitted && addclientuser.get('phonenumber').hasError('required')" class="IsRequired">
+                      Mobile number is required
+                    </div>
+                  </label>
+                </div>
+
+              </div>
+
+              <div class="col-md-12 text-center mt-3">
+                <button class="btn btn-success" type="submit" (click)="OnSubmit()"
+                  [ngClass]="{'button--loading':Success}"><span> Submit</span></button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

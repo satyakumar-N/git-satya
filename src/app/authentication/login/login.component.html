@@ -1,0 +1,61 @@
+<div class="auth-main-card">
+  <div class="auth-card">
+    <div class="form-side" style="width: 100%;padding: 30px;">
+      <div class="c-pointer" style="text-align: center;">
+        <span class="logo-single"></span>
+      </div>
+      <h4 class="mb-2 font-weight-bold" style="font-size: 18px;">Login</h4>
+
+      <form [formGroup]="Login" class="form mt-4">
+
+        <div class="tooltip-right-bottom">
+          <div class="row">
+
+            <div class="col-md-12">
+              <label class="form-group has-float-label">
+                <input type="text" class="form-control" formControlName="Email" placeholder=" Enter your User name" />
+                <span>User name</span>
+                <div *ngIf="Submitted && Login.get('Email').hasError('required')" class="invalid">
+                  User name {{ 'user.is-required' | translate }}
+                </div>
+                <!-- <div class="invalid" *ngIf="Submitted && Login.get('Email').hasError('pattern')">
+                  {{'user.emailmust'| translate}}
+                </div> -->
+              </label>
+            </div>
+
+            <!-- <div class="col-md-12"> <label class="form-group has-float-label">
+                <input type="Paasword" class="form-control" formControlName="Password" placeholder="Enter your password"
+                  maxlength="15" />
+                <span>Password</span>
+                <div *ngIf="Submitted && Login.get('Password').hasError('required')" class="invalid"> {{ 'user.password'
+                  | translate }} {{ 'user.is-required' | translate }}</div>
+              </label></div> -->
+
+            <div class="col-md-12">
+              <label class="form-group has-float-label">
+                <input [type]="hide?'password':'text'" class="form-control" formControlName="Password" maxlength="15"
+                  (keypress)="CF.NoSpace($event)" (paste)="CF.PasteEventAlphabets($event)"
+                  (keypress)="CF.Alphabets_Numbers($event)">
+                <img class="show_password" (click)="hide= !hide"
+                  [src]="(hide)?'../../../../assets/img/svg/hidden.png':'../../../../assets/img/svg/view.png'" alt="">
+                <span>Password</span>
+                <div *ngIf="Submitted && Login.get('Password').hasError('required')" class="invalid"> {{
+                  'user.password'
+                  | translate }} {{ 'user.is-required' | translate }}</div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center align-items-center mt-4">
+          <app-state-button [btnClass]="'btn btn-primary btn-lg btn-shadow'" [currentState]="buttonState"
+            [isDisabled]="buttonDisabled" (click)="login()">
+            {{ 'user.login-title' | translate | uppercase }}
+          </app-state-button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>

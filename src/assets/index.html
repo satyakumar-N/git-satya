@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All defaults demo</title>
+  <script>
+if(localStorage.getItem('reload')=='Yes'){
+  localStorage.setItem('reload', 'No')
+  window.location.reload();
+}
+// window.location.reload();
+  </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+<script>
+const myTimeout = setTimeout(myGreeting, 500);
+let myarr=[]
+function myGreeting() {
+  var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+        var reader = new FileReader();
+        reader.onloadend = function() {
+          document.getElementById('myImage').src= reader.result;
+            // callback(reader.result);
+        }
+        reader.readAsDataURL(xhr.response);
+    };
+    xhr.open('GET', window.location.href.split('?')[1]);
+    xhr.responseType = 'blob';
+    xhr.send();
+}
+function myStopFunction() {
+  clearTimeout(myTimeout);
+}
+function   zoomin() {
+    var myImg = document.getElementById("myImage");
+    var currWidth = myImg.clientWidth;
+    if (currWidth == 2500) return false;
+    else {
+      myImg.style.width = (currWidth + 100) + "px";
+myImg.style.height = (currWidth + 50) + "px";
+    }
+  }
+ function  zoomout() {
+    var myImg = document.getElementById("myImage");
+    var currWidth = myImg.clientWidth;
+    if (currWidth == 100) return false;
+    else {
+      myImg.style.width = (currWidth - 100) + "px";
+myImg.style.height = (currWidth - 50) + "px";
+    }
+  }
+</script>
+  <script src="https://unpkg.com/markerjs2/markerjs2.js"></script>
+  <script>
+    function showMarkerArea(target) {
+      const markerArea = new markerjs2.MarkerArea(target);
+      markerArea.uiStyleSettings.zoomButtonVisible = true;
+      markerArea.uiStyleSettings.zoomOutButtonVisible = true;
+      markerArea.uiStyleSettings.clearButtonVisible = true;
+      markerArea.addEventListener("render", (event) =>{
+    target.src = event.dataUrl;
+    // save the state of MarkerArea
+    if(event.state.markers.length>0){
+      if(myarr.length){
+        let data =myarr[0].markers;
+event.state.markers.map((sa)=>{
+  data.push(sa)
+})
+myarr[0].markers=data;
+localStorage.setItem('annotation_html',JSON.stringify(myarr))
+$("#was").attr("data-myval", JSON.stringify(myarr));
+      } else{
+        myarr =[event.state];
+        localStorage.setItem('annotation_html',JSON.stringify(myarr))
+        $("#was").attr("data-myval", JSON.stringify(myarr));
+      }
+    }
+  });
+      markerArea.show();
+    }
+  </script>
+</head>
+<body>
+<!--<div>
+<button class="zoombtn" type="button" onclick="zoomin()"> Zoom In</button>
+                    <button class="zoombtn" type="button" onclick="zoomout()"> Zoom Out</button>
+</div>-->
+<div style="text-align:center;margin :0px auto;" id="myview">
+<img id="myImage" src="" style="width: 100%;
+    height: 100%" onclick="showMarkerArea(this);" />
+</div>
+<span id="was" style="display: none;"></span>
+<script>
+  $(document).ready(function () {
+      var element = $("#myview"); // global variable
+      var getCanvas; //global variable
+      html2canvas(element, {
+          onrendered: function (canvas) {
+              getCanvas = canvas;
+          }
+      });
+      $("#btn-Convert-Html2Image").on('click', function () {
+          var imgageData = getCanvas.toDataURL("image/png");
+          $("#was").attr("data-myval",imgageData);
+          //Now browser starts downloading it instead of just showing it
+          var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
+          $("#btn-Convert-Html2Image").attr("download", "your_image.png").attr("href", newData);
+      });
+  });
+</script>
+</body>
+</html>
